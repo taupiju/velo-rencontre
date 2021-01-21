@@ -1,4 +1,6 @@
 FROM tiangolo/uwsgi-nginx:python3.8
+ENV LISTEN_PORT 5000
+EXPOSE 5000
 
 RUN pip install flask
 
