@@ -7,5 +7,5 @@ Start project :
 `docker-compose build`  
 `docker-compose up`  
   
- technique de flemmard : docker-compose up --build --force-recreate
+ technique de flemmard : `docker-compose up --build --force-recreate`
 
