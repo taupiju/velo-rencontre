@@ -1,11 +1,7 @@
 from flask import Flask
 from flask import jsonify, request
 
-import json #Géolocalisation
 import sqlite3
-import numpy as np 
-import matplotlib.pyplot as plt
-
 
 app = Flask(__name__)
 
@@ -22,7 +18,7 @@ def hello():
     """)
     db.commit()
     db.close()
-    return "j'aime les fleurs"
+    return "j'aime les BDD"
 
 @app.route("/add")
 def add_user():
