@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.3"
 
 services:
   map:
@@ -9,4 +9,12 @@ services:
     container_name: container-velo-map
     ports:
       - "5000:5000"
+  profile:
+    build:
+      context: ./profile
+      dockerfile: Dockerfile
+    image: velo-profile
+    container_name: container-velo-profile
+    ports:
+      - "5001:5001"
 # todo add network
