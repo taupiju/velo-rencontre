@@ -9,6 +9,7 @@ import webbrowser
 import os
 import requests
 import urllib.parse
+import sys
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -35,8 +36,11 @@ def createMap(address1,address2):
     if(affichage!=""):
         folium.Marker(location = (lat1 , lon1),popup=affichage).add_to(map) 
         folium.Marker(location = (lat2 , lon2),popup=affichage2).add_to(map) 
+    '''
     map.save(outfile='map.html')
+    print('eveyrhing ok', file = sys.stderr)
     os.popen('map.html')
+    '''
 
     return map
 
@@ -58,12 +62,11 @@ books = [
      'first_sentence': 'to wound the autumnal city.',
      'published': '1975'}
 ]
-
+'''
 @app.route('/', methods=['GET'])
 def home():
-    createMap()
     return "<h1>Distant Reading Archive</h1><p>This site is a prototype API for distant reading of science fiction novels.</p>"
-
+'''
 # A route to return all of the available entries in our catalog.
 @app.route('/api/v1/resources/books/all', methods=['GET'])
 def api_all():
@@ -87,9 +90,10 @@ def api_map():
         address2 = request.args['address2']
     else:
         return "Request Lattitude and Longitude of targets"
-    createMap(address1,address2)
-    return "<h1> All Done FDP</h1>"
+    map = createMap(address1,address2)
+    return map._repr_html_()
+
+if __name__ == "__main__":
+	app.run(host='0.0.0.0', debug=True, port=5000)
 
 
-
-app.run()
