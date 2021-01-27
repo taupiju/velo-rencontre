@@ -26,4 +26,3 @@ services:
 networks:
   velo-network:
     driver: bridge
-
