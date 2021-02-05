@@ -9,4 +9,10 @@ services:
     container_name: container-velo-map
     ports:
       - "5000:5000"
-# todo add network
+    networks:
+      - velo-network
+
+networks:
+  velo-network:
+    driver: bridge
+
