@@ -10,9 +10,20 @@ services:
     ports:
       - "5000:5000"
     networks:
+    - velo-network
+
+  profile:
+    build:
+      context: ./profile
+      dockerfile: Dockerfile
+    image: velo-profile
+    container_name: container-velo-profile
+    ports:
+      - "5001:5001"
+    networks:
       - velo-network
 
 networks:
   velo-network:
     driver: bridge
-
+    
