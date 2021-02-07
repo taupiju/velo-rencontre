@@ -59,7 +59,7 @@
 
 var addresse;
 var ville;
-fetch("http://localhost:5001/get")
+/*fetch("http://localhost:5001/get/"+)
       .then(function (response) {
           return response.json();
       }).then(function (text) {
@@ -70,7 +70,64 @@ fetch("http://localhost:5001/get")
           addresse = text[0][3];
           ville = text[0][4];
           map();
-      });
+      });*/
+    
+var token = {token:localStorage.getItem('AuthKey')}
+    
+//TO DO in APIS that use ROUTES
+//verify token
+var dataToSend = token;
+//console.log("Affichage dataToSend")
+//console.log(dataToSend)
+
+$.ajax({
+    url : "http://localhost:5001/getid",
+    headers: {'Access-Control-Allow-Origin' : 'http://localhost:5001' },
+    type : "POST", // http method
+    dataType: "json",
+    contentType: "application/json",
+    data :  JSON.stringify(dataToSend) , // data sent with the post request
+
+    // handle a successful response
+    success : function(json) {
+        $('#post-form').val(''); // remove the value from the input
+        //console.log(json); // log the returned json to the console
+        console.log("success getid"); // another sanity check
+        
+        console.log('GET response text:');
+          $('#name').text(json[0]);
+          $('#age').text(json[1] + " ans");
+          $('#resume').text(json[5]);
+          addresse = json[3]; //voir micro service (incomplet)
+          ville = json[4];  //voir micro service (incomplet)
+          map();
+
+    },
+
+    // handle a non-successful response
+    error : function(xhr,errmsg,err) {
+        $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+            " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        window.location = "http://localhost/connexion/connexion.html";
+    }
+});
+
+/*    
+fetch("http://localhost:5001/get/"+2)
+  .then(function (response) {
+      return response.json();
+  }).then(function (text) {
+      console.log('GET response text:');
+      console.log(text)
+      $('#name').text(text[0]);
+      $('#age').text(text[1] + " ans");
+      $('#resume').text(text[2]);
+      addresse = text[0]; //voir micro service (incomplet)
+      ville = text[0];  //voir micro service (incomplet)
+      map();
+  });
+  */
 
 function map(){
     fetch("http://localhost:5000/map?address1=4%20Rue%20De%20La%20Paix%20Louveciennes&address2="+ville)

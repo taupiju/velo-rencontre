@@ -1,0 +1,3 @@
+express --save
+jsonwebtoken
+sqlite3

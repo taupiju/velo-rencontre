@@ -36,6 +36,17 @@ services:
     volumes: 
       - ./front/app:/usr/share/nginx/html/
 
+  authenticate:
+    build:
+      context: ./authenticate
+      dockerfile: Dockerfile
+    image: velo-authenticate
+    container_name: container-velo-authenticate
+    ports:
+      - "5004:5004"
+    networks:
+      - velo-network
+
 networks:
   velo-network:
     driver: bridge

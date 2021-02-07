@@ -3,6 +3,7 @@ from flask import jsonify, request, json
 from flask_cors import CORS
 import connect_db
 import sqlite3
+import jwt
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
@@ -166,6 +167,34 @@ def get_user(user_id):
         )
 
     return response
+
+def verifyToken(token):
+    try:
+        jwt.decode(token['token'], "Mon message secret", algorithms="HS256")
+        return True
+    except:
+        return False
+
+@app.route("/getid",methods=['POST'])
+def get_userid():
+    token = request.json
+    if verifyToken(token):
+        db = connect_db.connection_db()
+        encoded_jwt = jwt.decode(token['token'], "Mon message secret", algorithms="HS256")
+        user_id = encoded_jwt['sub']
+        query = """SELECT name, age, email, adresse, ville, resume FROM users WHERE id=?"""
+        result = connect_db.execute_query(db, query, (str(user_id)))
+        user = result.fetchone()
+        response = app.response_class(
+                response=json.dumps(user),
+                status=200,
+                mimetype='application/json'
+            )
+
+        return response
+    else:
+        return 'token expired!', 400
+        
 
 if __name__ == "__main__":
     # Only for debugging while developing
