@@ -1,0 +1,82 @@
+
+<head>
+    <link rel="stylesheet" href="connexion.css" />
+</head>
+
+<body>
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            <!-- Tabs Titles -->
+            <h2 class="active" id="SignIn" onclick="switchSign()"> Sign In </h2>
+            <h2 class="inactive underlineHover" id="SignUp" onclick="switchSign()">Sign Up </h2>
+
+            <div id="SignInDiv" >
+                <!-- Icon -->
+
+
+                <!-- Login Form -->
+                <form>
+                    <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
+                    <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
+                    <input type="submit" class="fadeIn fourth" value="Log In">
+                </form>
+
+                <!-- Remind Passowrd -->
+                <div id="formFooter">
+                    <a class="underlineHover" href="#">Forgot Password?</a>
+                </div>
+            </div>
+
+            <div id="SignUpDiv" style="display: none;">
+
+                <form>
+                    <input type="text" id="UserName" class="fadeIn second" name="login" placeholder="User Name">
+                    <input type="text" id="password" class="fadeIn second" name="login" placeholder="Password">
+                    <input type="text" id="Confirmpassword" class="fadeIn second" name="login" placeholder="Confirm Password">
+                    <input type="text" id="email" class="fadeIn second" name="login" placeholder="Email">
+                    <input type="text" id="sex" class="fadeIn second" name="login" placeholder="Male or Female">
+                    <input type="submit" class="fadeIn fourth" value="Create Account">
+                </form>
+
+            </div>
+
+
+
+        </div>
+    </div>
+    <script src="/js/jquery-1.9.1.min.js"></script>
+    <script>
+        var activeSign =0; 
+
+        function switchSign(){
+            if(activeSign==0){
+                $("#SignIn").removeClass("active");
+                $("#SignIn").addClass("inactive underlineHover");
+
+                $("#SignUp").addClass("active");
+                $("#SignUp").removeClass("inactive underlineHover");
+                activeSign =1;
+                $("#SignInDiv")[0].style.display = "none";
+                $("#SignUpDiv")[0].style.display = "";
+
+                // Passe en mode SignUp
+            }
+            else{
+                $("#SignUp").removeClass("active");
+                $("#SignUp").addClass("inactive underlineHover");
+
+                $("#SignIn").addClass("active");
+                $("#SignIn").removeClass("inactive underlineHover");
+                activeSign =0;
+                $("#SignInDiv")[0].style.display = "";
+                $("#SignUpDiv")[0].style.display = "none";
+
+
+                // Passe en mode SignIn
+            }
+        }
+        
+
+
+    </script>
+</body>
