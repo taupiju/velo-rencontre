@@ -10,6 +10,7 @@ RUN apt-get install -y nginx nodejs
 
 # Remove the default Nginx configuration file
 RUN rm -v /etc/nginx/nginx.conf
+RUN rm /var/www/html/index.nginx-debian.html
 
 # Copy a configuration file from the current directory
 ADD nginx.conf /etc/nginx/

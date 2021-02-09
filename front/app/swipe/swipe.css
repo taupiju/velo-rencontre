@@ -3,7 +3,7 @@
   width: 500px;
   margin: auto !important;
   display: block;
-  height: 500px;
+  height: 450px;
   position: relative;
   list-style-type: none;
   -webkit-touch-callout: none;
@@ -12,7 +12,31 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+
 }
+
+#all{
+  position:relative;
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+  margin: auto;
+  width: 600px;
+  height:fit-content;
+}
+.topnav{
+  overflow: hidden;
+  background-color: #3496d8;
+}
+.topnav a{
+  float:left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
 .buddy {
   display: none;
   background: #fff;
