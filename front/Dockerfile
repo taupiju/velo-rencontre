@@ -1,16 +1,8 @@
 #
 # BudgetTracker Dockerfile for UI
 #
-FROM ubuntu:latest
+FROM nginx:stable
 
-USER root
-
-RUN apt-get update
-RUN apt-get install -y nginx nodejs
-
-# Remove the default Nginx configuration file
-RUN rm -v /etc/nginx/nginx.conf
-RUN rm /var/www/html/index.nginx-debian.html
 
 # Copy a configuration file from the current directory
 ADD nginx.conf /etc/nginx/
@@ -18,12 +10,4 @@ ADD nginx.conf /etc/nginx/
 ADD /app /usr/share/nginx/html/
 ADD /app /var/www/html/
 
-# Append "daemon off;" to the beginning of the configuration
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
-# Expose ports
-EXPOSE 80
-
-# Set the default command to execute
-# when creating a new container
-CMD service nginx start
