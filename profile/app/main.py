@@ -59,32 +59,44 @@ def update_user(user_id):
         db = connect_db.connection_db()
         data = request.json
         setter = ""
-        params = (user_id)
+        params = ()
 
-        if data["name"]:
-            setter += " name=? "
-            params = params + (data["name"]) 
+        try:
+            if data["name"]:
+                setter += " name= ? "
+                params = (*params , str((data["name"])))
+        except KeyError:
+            pass
 
-        if data["age"]:
-            if setter != "":
-                setter += " AND "
-            setter += " age=? "
-            params = params + (data["age"]) 
+        try:
+            if data["age"]:
+                if setter != "":
+                    setter += " , "
+                setter += " age= ? "
+                params = (*params , (data["age"]))
+        except KeyError:
+            pass
 
-        if data["email"]:
-            if setter != "":
-                setter += " AND "
-            setter += " email=? "
-            params = params + (data["email"]) 
+        try:
+            if data["email"]:
+                if setter != "":
+                    setter += " , "
+                setter += " email= ? "
+                params = (*params , str((data["email"]))) 
+        except KeyError:
+            pass
+            
 
-        query = """UPDATE users SET """ + setter + """WHERE id=?"""
+        params = (*params , int(user_id))
+        query = """UPDATE users SET """ + setter + """WHERE id= ?"""
         
         response = app.response_class(
                 response="no params",
                 status=404,
                 mimetype='application/json'
             )
-        
+        print(params)
+        print(query)
         if params:
             result = connect_db.execute_query(db, query, params)
             user_updated = result.rowcount
