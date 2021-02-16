@@ -33,6 +33,8 @@ services:
       - "80:80"
     networks:
       - velo-network
+    volumes: 
+      - ./front/app:/usr/share/nginx/html/
 
 networks:
   velo-network:
