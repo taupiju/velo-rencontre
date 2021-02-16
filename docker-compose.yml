@@ -23,6 +23,19 @@ services:
     networks:
       - velo-network
 
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    image: velo-front
+    container_name: container-velo-front
+    ports:
+      - "80:80"
+    networks:
+      - velo-network
+    volumes: 
+      - ./front/app:/usr/share/nginx/html/
+
 networks:
   velo-network:
     driver: bridge
