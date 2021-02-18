@@ -1,0 +1,91 @@
+
+<head>
+    <link rel="stylesheet" href="editprofile.css" />
+</head>
+
+<body>
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            <!-- Tabs Titles -->
+            <h2 class="active" id="SignIn" onclick="switchSign()"> Informations </h2>           
+
+            <div id="SignInDiv" >
+                <!-- Icon -->
+
+
+                <!-- Login Form -->
+                <form action="profile.html" id="post-form" method="POST">
+                    <input type="text" id="Nom" class="fadeIn second" name="name" placeholder="Nom">
+                    <input type="text" id="Age" class="fadeIn second" name="age" placeholder="Age">
+                    <input type="text" id="Email" class="fadeIn second" name="email" placeholder="Email">                    
+                    <input type="text" id="adresse" class="fadeIn second" name="adresse" placeholder="adresse">
+                    <input type="text" id="ville" class="fadeIn second" name="ville" placeholder="ville">
+                    <input type="text" id="resume" class="fadeIn second" name="resume" placeholder="resume">
+
+                    <input id="myButton" type="submit" class="fadeIn fourth" value="Valider" >
+                </form>
+
+                <!-- Remind Passowrd -->
+                <div id="formFooter">
+                    <a class="underlineHover" href="profile.html">Annuler</a>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+    <script src="../js/jquery-1.9.1.min.js"></script>
+    <script>
+
+        // Mets au bon format les donnees du form
+        (function($){
+        $.fn.getFormData = function(){
+            var data = {};
+            var dataArray = $(this).serializeArray();
+            for(var i=0;i<dataArray.length;i++){
+            data[dataArray[i].name] = dataArray[i].value;
+            }
+            return data;
+        }
+        })(jQuery);
+
+
+        // Submit post on submit
+        $('#post-form').on('submit', function(event){
+            event.preventDefault();
+            console.log("form submitted!")  // sanity check
+            create_post();
+        });
+
+        function create_post() {
+            var dataToSend = JSON.stringify($('#post-form').getFormData());
+            console.log(dataToSend);
+            console.log("create post is working!") // sanity check
+            $.ajax({
+                url : "http://localhost:5001/update/1", // the endpoint                                    METTRE L'ID QUAND AUTH FAIT !!!!!!!!!!!!
+                headers: {'Access-Control-Allow-Origin' : 'http://localhost:5001' },
+                type : "POST", // http method
+                dataType: "json",
+                contentType: "application/json",
+                data :  dataToSend , // data sent with the post request
+
+                // handle a successful response
+                success : function(json) {
+                    $('#post-form').val(''); // remove the value from the input
+                    console.log(json); // log the returned json to the console
+                    console.log("success"); // another sanity check
+                    window.location = "http://localhost/profil/profile.html";
+                },
+
+                // handle a non-successful response
+                error : function(xhr,errmsg,err) {
+                    $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                        " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                }
+            });
+        };
+
+    </script>
+</body>
