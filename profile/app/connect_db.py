@@ -5,7 +5,7 @@ import sqlite3
 
 ''' Se connecter à la base '''
 def connection_db():
-    return sqlite3.connect('profile_base.db')
+    return sqlite3.connect('profile_base.sqlite')
 
 def close_db(db):
     db.commit()
@@ -22,7 +22,7 @@ def execute_query(db, query, params=()):
 
 def create_db():
     try:
-        conn = sqlite3.connect('profile_base.db')
+        conn = sqlite3.connect('profile_base.sqlite')
         cursor = conn.cursor()
         cursor.execute("""
     CREATE TABLE users(
