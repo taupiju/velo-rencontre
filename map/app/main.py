@@ -1,5 +1,7 @@
 import flask
 from flask import jsonify, request
+from flask_cors import CORS
+
 
 import folium, branca, json #Géolocalisation
 import urllib.request   #Récuperer des données internet
@@ -13,6 +15,7 @@ import sys
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 
 def createMap(address1,address2):
 
@@ -28,8 +31,8 @@ def createMap(address1,address2):
     lon2=float(response[0]["lon"])
 
     #Création de la carte vierge
-    map = folium.Map(location=((lat1+lat2)/2,(lon1+lon2)/2), tiles='OpenStreetMap', zoom_start=12)
-
+    map = folium.Map(location=((lat1+lat2)/2,(lon1+lon2)/2), tiles='OpenStreetMap')
+    map.fit_bounds([[lat1,lon1],[lat2,lon2]])
     #Ajoute sur la carte des marker avec les données à afficher en cliquant dessus
     affichage="You (Damn Ugly)"
     affichage2="Your Crush"
@@ -44,43 +47,25 @@ def createMap(address1,address2):
 
     return map
 
-'''
-# Create some test data for our catalog in the form of a list of dictionaries.
-books = [
-    {'id': 0,
-     'title': 'A Fire Upon the Deep',
-     'first_sentence': 'The coldsleep itself was dreamless.',
-     'year_published': '1992'},
-    {'id': 1,
-     'title': 'The Ones Who Walk Away From Omelas',
-     'author': 'Ursula K. Le Guin',
-     'first_sentence': 'With a clamor of bells that set the swallows soaring, the Festival of Summer came to the city Omelas, bright-towered by the sea.',
-     'published': '1973'},
-    {'id': 2,
-     'title': 'Dhalgren',
-     'author': 'Samuel R. Delany',
-     'first_sentence': 'to wound the autumnal city.',
-     'published': '1975'}
-]
-'''
+
 @app.route('/', methods=['GET'])
 def home():
     return "<h1>Distant Reading Archive</h1><p>This site is a prototype API for distant reading of science fiction novels.</p>"
-'''
-# A route to return all of the available entries in our catalog.
-@app.route('/api/v1/resources/books/all', methods=['GET'])
-def api_all():
-    return jsonify(books)
 
-@app.route('/api/v1/resources/books/id', methods=['GET'])
-def api_id():
-    if "id" in request.args:
-        return jsonify(books[int(request.args['id'])])
-    else:
-        return "Error: No id field provided. Please specify an id."
-'''
-@app.route('/api/v1/map', methods=['GET'])
+@app.route('/map')
 def api_map():
+    '''
+    db = connect_db.connection_db()
+    query = """SELECT email FROM users"""
+    result = connect_db.execute_query(db, query)
+    users = result.fetchall()
+    response = app.response_class(
+            response=json.dumps(users),
+            status=200,
+            mimetype='application/json'
+        )
+    print(response)
+    '''
     # exemple : http://127.0.0.1:5000/api/v1/map?address1=4%20Rue%20De%20La%20Paix%20Louveciennes&address2=6%20Allée%20arnaud%20massy%20Bondoufle
     if "address1" in request.args:
         address1 = request.args['address1']
@@ -95,5 +80,4 @@ def api_map():
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0', debug=True, port=5000)
-
 

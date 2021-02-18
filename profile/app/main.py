@@ -1,9 +1,11 @@
 from flask import Flask
 from flask import jsonify, request, json
+from flask_cors import CORS
 import connect_db
 import sqlite3
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 
 @app.route("/")
 def hello():
@@ -15,9 +17,9 @@ def add_user():
     if request.method == 'POST':
         db = connect_db.connection_db()
         data = request.json
-        params = (data['name'], data['age'], data['email'])
+        params = (data['name'], data['age'], data['email'],data['adresse'],data['ville'],data['resume'])
         query = """
-        INSERT INTO users(name, age, email) VALUES(?, ?, ?)"""
+        INSERT INTO users(name, age, email, adresse, ville, resume) VALUES(?, ?, ?, ?, ?, ?)"""
         connect_db.execute_query(db, query, params)
         connect_db.close_db(db)
 
@@ -85,6 +87,33 @@ def update_user(user_id):
                 params = (*params , str((data["email"]))) 
         except KeyError:
             pass
+
+        try:
+            if data["adresse"]:
+                if setter != "":
+                    setter += " , "
+                setter += " adresse= ? "
+                params = (*params , str((data["adresse"]))) 
+        except KeyError:
+            pass
+
+        try:
+            if data["ville"]:
+                if setter != "":
+                    setter += " , "
+                setter += " ville= ? "
+                params = (*params , str((data["ville"]))) 
+        except KeyError:
+            pass
+
+        try:
+            if data["resume"]:
+                if setter != "":
+                    setter += " , "
+                setter += " resume= ? "
+                params = (*params , str((data["resume"]))) 
+        except KeyError:
+            pass
             
 
         params = (*params , int(user_id))
@@ -113,7 +142,7 @@ def update_user(user_id):
 @app.route("/get")
 def get_users():
     db = connect_db.connection_db()
-    query = """SELECT name, age, email FROM users"""
+    query = """SELECT name, age, email, adresse, ville, resume FROM users"""
     result = connect_db.execute_query(db, query)
     users = result.fetchall()
     response = app.response_class(

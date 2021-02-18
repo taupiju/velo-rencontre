@@ -29,7 +29,10 @@ def create_db():
         id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
         name TEXT,
         age INTEGER,
-        email TEXT
+        email TEXT,
+        adresse TEXT,
+        ville TEXT,
+        resume TEXT
     )
     """)
         conn.commit()
