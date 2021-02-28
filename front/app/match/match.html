@@ -57,19 +57,13 @@
             <h2 class="tm-hero-title">Faire des rencontres</h2>
             
             <p class="tm-hero-subtitle">
-                <a href="#rencontre" class="text-center">
+                
                     <button onclick="matcher()">Matcher</button>
-                </a>
+            
               <i class="far fa-smile-wink"></i>
               <br />
             </p>
         </div>        
-      </div>
-
-      <div class="tm-next tm-intro-next">
-        <a href="#rencontre" class="text-center tm-down-arrow-link">
-          <i class="fas fa-3x fa-caret-down tm-down-arrow"></i>
-        </a>
       </div>
       </section>
 
@@ -138,11 +132,10 @@
                     data :  JSON.stringify(user_data) , 
             
                     success : function(other_profiles) {
-                        console.log(other_profiles);   
+                        $("#other-users").empty();
                         other_profiles.forEach(profile => {
                             var user = "<li>" + profile[0] + " " + profile[1] + " ans. </li>";
                             $("#other-users").append(user);
-                            console.log(profile);
                         });
                         
                     },

@@ -64,6 +64,7 @@ async function refreshUsers(){
     const promiseUsers = getUsers();
     promiseUsers.then((v_users) => {
         users = v_users;
+        //console.log(users)
     });
 }
 
@@ -122,13 +123,13 @@ function deleteAccount(req, res, next) {
 
 async function authenticate2({ username, password },res) {
     
+    refreshUsers();
+    
     const user = users.find(u => u.username === username && u.password === password);
     
     if (!user){
         throw 'Username or password is incorrect';
     }
-    
-    //console.log(users)
 
     // create a jwt token that is valid for 7 days
     const token = jwt2.sign({ sub: user.id }, "Mon message secret", { expiresIn: '1d' });
@@ -156,14 +157,7 @@ async function verifyAuthenticate2(reqbody) {
 }
 
 async function signup2(reqbody) {
-    let lastid = users[users.length-1].id
     let addedUser = reqbody;
-    //console.log("user to add")
-    //console.log(addedUser);
-    //console.log(" ")
-    
-    //addedUser['id'] = lastid+1;
-    //users.push(addedUser);
     
     var db = connect_db.connection_db();
     
@@ -171,24 +165,11 @@ async function signup2(reqbody) {
     
     var params = [addedUser['username'], addedUser['password'], addedUser['email']]
     
-    //console.log("params")
-    //console.log(params)
-    //console.log(" ")
-    
-    
     connect_db.execute_query(db,query,params)
 
-    //console.log("Before refreshed users")
-    //console.log(users.length)
-    //console.log("refreshed users")
     refreshUsers();
-    ///console.log(users)
-    //console.log(users.length)
-    const user = users[users.length-1]
-    
 
-    //console.log("what was the user added again ?")
-    //console.log(user)
+    const user = users[users.length-1]
     
     connect_db.close_db(db);
     
@@ -220,15 +201,11 @@ async function deleteAccount2(reqbody) {
 }
 
 async function getUsers(){
-    //console.log("test import de connect_db");
-    //console.log(typeof connect_db.connection_db);
     var db = connect_db.connection_db();
     
     var query = "SELECT id, username, password, email FROM users"
     
     var result = await connect_db.select_query(db,query)
-    //console.log("Select query")
-    //console.log(result)
     
     connect_db.close_db(db);
     

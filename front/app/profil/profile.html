@@ -59,26 +59,11 @@
 
 var addresse;
 var ville;
-/*fetch("http://localhost:5001/get/"+)
-      .then(function (response) {
-          return response.json();
-      }).then(function (text) {
-          console.log('GET response text:');
-          $('#name').text(text[0][0]);
-          $('#age').text(text[0][1] + " ans");
-          $('#resume').text(text[0][5]);
-          addresse = text[0][3];
-          ville = text[0][4];
-          map();
-      });*/
     
 var token = {token:localStorage.getItem('AuthKey')}
-    
-//TO DO in APIS that use ROUTES
+
 //verify token
 var dataToSend = token;
-//console.log("Affichage dataToSend")
-//console.log(dataToSend)
 
 $.ajax({
     url : "http://localhost:5001/getid",
@@ -91,10 +76,7 @@ $.ajax({
     // handle a successful response
     success : function(json) {
         $('#post-form').val(''); // remove the value from the input
-        //console.log(json); // log the returned json to the console
-        console.log("success getid"); // another sanity check
         
-        console.log('GET response text:');
           $('#name').text(json[0]);
           $('#age').text(json[1] + " ans");
           $('#resume').text(json[5]);
@@ -113,28 +95,11 @@ $.ajax({
     }
 });
 
-/*    
-fetch("http://localhost:5001/get/"+2)
-  .then(function (response) {
-      return response.json();
-  }).then(function (text) {
-      console.log('GET response text:');
-      console.log(text)
-      $('#name').text(text[0]);
-      $('#age').text(text[1] + " ans");
-      $('#resume').text(text[2]);
-      addresse = text[0]; //voir micro service (incomplet)
-      ville = text[0];  //voir micro service (incomplet)
-      map();
-  });
-  */
-
 function map(){
     fetch("http://localhost:5000/map?address1=4%20Rue%20De%20La%20Paix%20Louveciennes&address2="+ville)
 .then(function (response) {
     return response.text();
 }).then(function (text) {
-    console.log('GET response text:');
     $('#map').html(text);
 });
 }

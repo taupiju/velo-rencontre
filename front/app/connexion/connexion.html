@@ -15,7 +15,7 @@
 
 
                 <!-- Login Form -->
-                <form action="connexion.html" id="post-form" method="POST">
+                <form id="post-form" method="POST">
                     <input type="text" id="username" class="fadeIn second" name="username" placeholder="login">
                     <input type="text" id="password" class="fadeIn third" name="password" placeholder="password">
                     <input type="submit" class="fadeIn fourth" value="Log In">
@@ -28,13 +28,17 @@
             </div>
 
             <div id="SignUpDiv" style="display: none;">
-
-                <form>
-                    <input type="text" id="username" class="fadeIn second" name="login" placeholder="User Name">
-                    <input type="text" id="password" class="fadeIn second" name="login" placeholder="Password">
-                    <input type="text" id="Confirmpassword" class="fadeIn second" name="login" placeholder="Confirm Password">
-                    <input type="text" id="email" class="fadeIn second" name="login" placeholder="Email">
-                    <input type="text" id="sex" class="fadeIn second" name="login" placeholder="Male or Female">
+                
+                <form id="post-form2" method="POST">
+                    <input type="text" id="username" class="fadeIn second" name="username" placeholder="User Name">
+                    <input type="text" id="password" class="fadeIn second" name="password" placeholder="Password">
+                    <input type="text" id="name" class="fadeIn second" name="name" placeholder="Prenom">
+                    <input type="text" id="age" class="fadeIn second" name="age" placeholder="Age">
+                    <input type="text" id="email" class="fadeIn second" name="email" placeholder="Email">
+                    <input type="text" id="adresse" class="fadeIn second" name="adresse" placeholder="Adresse">
+                    <input type="text" id="ville" class="fadeIn second" name="ville" placeholder="Ville">
+                    <input type="text" id="resume" class="fadeIn second" name="resume" placeholder="Description">
+                    
                     <input type="submit" class="fadeIn fourth" value="Create Account">
                 </form>
 
@@ -46,7 +50,8 @@
     </div>
     <script src="../js/jquery-1.9.1.min.js"></script>
     <script>
-        var activeSign =0; 
+        var activeSign =0;
+        var tmp = false;
 
         function switchSign(){
             if(activeSign==0){
@@ -58,6 +63,8 @@
                 activeSign =1;
                 $("#SignInDiv")[0].style.display = "none";
                 $("#SignUpDiv")[0].style.display = "";
+                
+                tmp = true;
 
                 // Passe en mode SignUp
             }
@@ -70,6 +77,8 @@
                 activeSign =0;
                 $("#SignInDiv")[0].style.display = "";
                 $("#SignUpDiv")[0].style.display = "none";
+                
+                tmp = false;
 
 
                 // Passe en mode SignIn
@@ -88,19 +97,32 @@
             return data;
         }
         })(jQuery);
-
-
+    
         // Submit post on submit
         $('#post-form').on('submit', function(event){
             event.preventDefault();
-            console.log("form submitted!")  // sanity check
-            create_post();
+            if(tmp == false){ //true
+                login_post();
+            }
+            if(tmp == true) {
+                signup_post();
+            }
+                
+        });
+        
+        // Submit post on submit
+        $('#post-form2').on('submit', function(event){
+            event.preventDefault();
+            if(tmp == true) {
+                signup_post();
+            }
+                
         });
 
-        function create_post() {
+        function login_post() {
             var dataToSend = JSON.stringify($('#post-form').getFormData());
             //console.log(dataToSend);
-            console.log("create post is working!") // sanity check
+            console.log("login post is working!") // sanity check
             $.ajax({
                 url : "http://localhost:5004/authenticate",
                 headers: {'Access-Control-Allow-Origin' : 'http://localhost:5004' },
@@ -118,6 +140,56 @@
                     localStorage.setItem('AuthKey',json.token);
                     
                     window.location = "http://localhost/";
+                },
+
+                // handle a non-successful response
+                error : function(xhr,errmsg,err) {
+                    $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                        " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                    localStorage.clear();
+                    
+                }
+            });
+        };
+        
+        function signup_post() {
+            var dataToSend = JSON.stringify($('#post-form2').getFormData());
+            $.ajax({
+                url : "http://localhost:5004/signup",
+                headers: {'Access-Control-Allow-Origin' : 'http://localhost:5004' },
+                type : "POST", // http method
+                dataType: "json",
+                contentType: "application/json",
+                data :  dataToSend , // data sent with the post request
+
+                // handle a successful response
+                success : function(json) {
+                    $('#post-form').val(''); // remove the value from the input
+                    
+                    $.ajax({
+                        url : "http://localhost:5001/add",
+                        headers: {'Access-Control-Allow-Origin' : '*' },
+                        type : "POST", // http method
+                        dataType: "json",
+                        contentType: "application/json",
+                        data :  dataToSend , // data sent with the post request
+
+                        // handle a successful response
+                        success : function(json) {
+                        },
+
+                        // handle a non-successful response
+                        error : function(xhr,errmsg,err) {
+                            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                            localStorage.clear();
+
+                        }
+                    });
+                    
+                    window.location = "http://localhost/connexion/connexion.html";
                 },
 
                 // handle a non-successful response

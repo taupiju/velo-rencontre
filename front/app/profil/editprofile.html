@@ -54,27 +54,24 @@
         // Submit post on submit
         $('#post-form').on('submit', function(event){
             event.preventDefault();
-            console.log("form submitted!")  // sanity check
             create_post();
         });
-
+        
         function create_post() {
-            var dataToSend = JSON.stringify($('#post-form').getFormData());
-            console.log(dataToSend);
-            console.log("create post is working!") // sanity check
+            var dataToSend = $('#post-form').getFormData();
+            var token = {token:localStorage.getItem('AuthKey')}
+            var dataToSend2 = JSON.stringify([dataToSend,token])
             $.ajax({
-                url : "http://localhost:5001/update/1", // the endpoint                                    METTRE L'ID QUAND AUTH FAIT !!!!!!!!!!!!
+                url : "http://localhost:5001/update",
                 headers: {'Access-Control-Allow-Origin' : 'http://localhost:5001' },
                 type : "POST", // http method
                 dataType: "json",
                 contentType: "application/json",
-                data :  dataToSend , // data sent with the post request
+                data :  dataToSend2, // data sent with the post request
 
                 // handle a successful response
                 success : function(json) {
                     $('#post-form').val(''); // remove the value from the input
-                    console.log(json); // log the returned json to the console
-                    console.log("success"); // another sanity check
                     window.location = "http://localhost/profil/profile.html";
                 },
 

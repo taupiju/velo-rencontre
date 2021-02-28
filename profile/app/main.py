@@ -56,11 +56,15 @@ def delete_user(user_id):
 
         return response 
 
-@app.route("/update/<user_id>", methods=['POST'])
-def update_user(user_id):
-    if request.method == 'POST':
+@app.route("/update", methods=['POST'])
+def update_user():
+    token = request.json[1]
+
+    if verifyToken(token):
         db = connect_db.connection_db()
-        data = request.json
+        encoded_jwt = jwt.decode(token['token'], "Mon message secret", algorithms="HS256")
+        user_id = encoded_jwt['sub']
+        data = request.json[0]
         setter = ""
         params = ()
 
@@ -125,8 +129,6 @@ def update_user(user_id):
                 status=404,
                 mimetype='application/json'
             )
-        print(params)
-        print(query)
         if params:
             result = connect_db.execute_query(db, query, params)
             user_updated = result.rowcount
@@ -138,7 +140,7 @@ def update_user(user_id):
                 mimetype='application/json'
             )
 
-        return response 
+        return response
 
 @app.route("/get")
 def get_users():
@@ -198,7 +200,7 @@ def get_userid():
         encoded_jwt = jwt.decode(token['token'], "Mon message secret", algorithms="HS256")
         user_id = encoded_jwt['sub']
         query = """SELECT name, age, email, adresse, ville, resume FROM users WHERE id=?"""
-        result = connect_db.execute_query(db, query, (str(user_id)))
+        result = connect_db.execute_query(db, query, (str(user_id),))
         user = result.fetchone()
         response = app.response_class(
                 response=json.dumps(user),

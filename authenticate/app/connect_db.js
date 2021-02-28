@@ -21,7 +21,7 @@ module.exports = {
                   return console.log(err.message);
                 }
                 // get the last insert id
-                console.log(`A row has been inserted with rowid ${this.lastID} and ${this.username}`);
+                console.log(`A row has been inserted with rowid ${this.lastID}`);
               });
         else
             db.run(query)

@@ -17,11 +17,7 @@ cors = CORS(app, resources={r"*": {"origins": "*"}})
 @app.route("/",methods=['POST'])
 def match_by_city():
 
-    print("JE SUIS IC LALALAL")
-    print(request)
-    print(request.json)
     data = request.json
-    print(data)
     json_data = {
         "email" : data["email"]
     }
