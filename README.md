@@ -22,3 +22,7 @@ Nous utilisons un token JWT (avec l'algorithme HS256 pour le hashage du mot de p
 Nos API (REST) sont développées en NodeJS, Python (flask).
 
 ## Schéma de notre architecture
+
+![alt text][logo]
+
+[logo]: https://i.gyazo.com/3ee10c6c4c4b20475cea4f314f87d0d9.png "Architecture"
