@@ -46,6 +46,17 @@ services:
       - "5004:5004"
     networks:
       - velo-network
+  
+  match:
+    build:
+      context: ./match
+      dockerfile: Dockerfile
+    image: velo-match
+    container_name: container-velo-match
+    ports:
+      - "5005:5005"
+    networks:
+      - velo-network
 
 networks:
   velo-network:

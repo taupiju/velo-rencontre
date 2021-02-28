@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>Inscrire un titre ici</title>
+    <!-- On peut avoir d'autres méta-données ici -->
+  </head>
+  <body>
+    <h1> TEST </h1>
+    <button onclick="matcher()">Matcher</button>
+    <div id="other-users"></div>
+  </body>
+  <script src="../js/jquery-1.9.1.min.js"></script>
+  <script>
+    
+    function matcher(){
+        var city;
+        var email;
+        var token = {token:localStorage.getItem('AuthKey')}
+
+        var dataToSend = token;
+        var user_data;
+
+        
+        $.ajax({
+            url : "http://localhost:5001/getid",
+            headers: {'Access-Control-Allow-Origin' : 'http://localhost:5001' },
+            type : "POST", // http method
+            dataType: "json",
+            contentType: "application/json",
+            data :  JSON.stringify(dataToSend) , // data sent with the post request
+        
+            // handle a successful response
+            success : function(json) {
+                email = json[2];
+                city = json[4]; 
+                user_data = {
+                    "email" : email,
+                    "city" : city
+                };    
+
+                $.ajax({
+                url : "http://localhost:5005/",
+                headers: {'Access-Control-Allow-Origin' : 'http://localhost:5005' },
+                type : "POST", 
+                dataType: "json",
+                contentType: "application/json",
+                data :  JSON.stringify(user_data) , 
+        
+                success : function(other_profiles) {
+                    console.log(other_profiles);   
+                    $("#other-users").append(other_profiles);
+                },
+        
+                error : function(xhr,errmsg,err) {
+                    $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                    " <a href='#' class='close'>&times;</a></div>"); 
+                console.log(xhr.status + ": " + xhr.responseText); 
+            }
+        });
+
+
+            },
+            
+        
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                    " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                window.location = "http://localhost/connexion/connexion.html";
+            }
+        });
+
+        
+        /*console.log(user_data);
+        $.ajax({
+            url : "http://localhost:5005/",
+            headers: {'Access-Control-Allow-Origin' : 'http://localhost:5005' },
+            type : "POST", 
+            dataType: "json",
+            contentType: "application/json",
+            data :  JSON.stringify(user_data) , 
+        
+            success : function(other_profiles) {
+                console.log(other_profiles);   
+                $("#other-users").append(other_profiles);
+            },
+        
+            error : function(xhr,errmsg,err) {
+                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                    " <a href='#' class='close'>&times;</a></div>"); 
+                console.log(xhr.status + ": " + xhr.responseText); 
+            }
+        });
+        */
+    }
+    </script>
+</html>

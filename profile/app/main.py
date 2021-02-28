@@ -168,6 +168,21 @@ def get_user(user_id):
 
     return response
 
+@app.route("/get-other-users", methods=['POST'])
+def get_other_users():
+    db = connect_db.connection_db()
+    data = request.json
+    query = """SELECT name, age, email, adresse, ville FROM users WHERE email!=?"""
+    result = connect_db.execute_query(db, query, (data["email"],))
+    user = result.fetchall()
+    response = app.response_class(
+            response=json.dumps(user),
+            status=200,
+            mimetype='application/json'
+        )
+
+    return response
+
 def verifyToken(token):
     try:
         jwt.decode(token['token'], "Mon message secret", algorithms="HS256")
