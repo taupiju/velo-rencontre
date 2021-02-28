@@ -1,5 +1,5 @@
 # velo-rencontre
-A project about meeting new people through being a biking addict 
+A project about meeting new people through being a biking addict   
 Un projet permettant de faire de nouvelle rencontre en étant fan de vélo.
 
 Lancement du projet :
