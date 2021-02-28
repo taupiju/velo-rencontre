@@ -1,99 +1,170 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
   <head>
-    <meta charset="utf-8">
-    <title>Inscrire un titre ici</title>
-    <!-- On peut avoir d'autres méta-données ici -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Trouver un match</title>
+    <link rel="stylesheet" href="../fontawesome-5.5/css/all.min.css" />
+    <link rel="stylesheet" href="../slick/slick.css">
+    <link rel="stylesheet" href="../slick/slick-theme.css">
+    <link rel="stylesheet" href="../magnific-popup/magnific-popup.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/templatemo-style.css" />
   </head>
-  <body>
-    <h1> TEST </h1>
-    <button onclick="matcher()">Matcher</button>
-    <div id="other-users"></div>
-  </body>
-  <script src="../js/jquery-1.9.1.min.js"></script>
-  <script>
+  <body>    
+    <!-- Hero section -->
+    <section id="hero" class="text-white tm-font-big tm-parallax">
+      <!-- Navigation -->
+      <nav class="navbar navbar-expand-md tm-navbar" id="">              
+        <div class="container">   
+          <div class="tm-next">
+            <a href="../index.html#hero" class="navbar-brand">
+              <img src="../img/icon2.png" width="100" height="100">
+              Vélo Rencontre
+            </a>
+          </div>             
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars navbar-toggler-icon"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                  <a class="nav-link tm-nav-link" href="../index.html#introduction">Introduction</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link tm-nav-link" href="../index.html#contact">Nous Contacter</a>
+              </li>  
+              <li class="nav-item">
+                <a class="nav-link tm-nav-link" href="../profil/profile.html">Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link tm-nav-link" href="rencontre.html">Rencontre</a>
+              </li>
+              <li class="nav-item">
+                <div>
+                  <a class="nav-link tm-nav-link" href="../connexion/connexion.html">Se connecter</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div class="text-center tm-hero-text-container">
+        <div class="tm-hero-text-container-inner">
+            <h2 class="tm-hero-title">Faire des rencontres</h2>
+            
+            <p class="tm-hero-subtitle">
+                <a href="#rencontre" class="text-center">
+                    <button onclick="matcher()">Matcher</button>
+                </a>
+              <i class="far fa-smile-wink"></i>
+              <br />
+            </p>
+        </div>        
+      </div>
+
+      <div class="tm-next tm-intro-next">
+        <a href="#rencontre" class="text-center tm-down-arrow-link">
+          <i class="fas fa-3x fa-caret-down tm-down-arrow"></i>
+        </a>
+      </div>
+      </section>
+
+      <!--            TEMPLATE          -->
+        <section id="rencontre" class="tm-section-pad-top tm-parallax-2">
+      <style>	     	  		  	   
+        .card-img-top{	     	  		  	   
+            object-fit: cover;	     	  		  	   
+            height: 245px;	     	  		  	   
+            width: 245;	     	
+            margin-left: auto;
+            margin-right: auto;  	   
+        }
+        #colonne{
+            margin-left: 5%;
+        }
+
+                                
+    </style>	     	  		  	    	  		  	   
     
-    function matcher(){
-        var city;
-        var email;
-        var token = {token:localStorage.getItem('AuthKey')}
+    <ul id="other-users">
+    </ul>
+    
 
-        var dataToSend = token;
-        var user_data;
+    </section>
 
-        
-        $.ajax({
-            url : "http://localhost:5001/getid",
-            headers: {'Access-Control-Allow-Origin' : 'http://localhost:5001' },
-            type : "POST", // http method
-            dataType: "json",
-            contentType: "application/json",
-            data :  JSON.stringify(dataToSend) , // data sent with the post request
-        
-            // handle a successful response
-            success : function(json) {
-                email = json[2];
-                city = json[4]; 
-                user_data = {
-                    "email" : email,
-                    "city" : city
-                };    
 
-                $.ajax({
-                url : "http://localhost:5005/",
-                headers: {'Access-Control-Allow-Origin' : 'http://localhost:5005' },
-                type : "POST", 
+
+    <!--        FIN TEMPLATE       -->
+    <script src="../js/jquery-1.9.1.min.js"></script>
+    <script>
+      
+        function matcher(){
+            console.log("wait...");
+            var city;
+            var email;
+            var token = {token:localStorage.getItem('AuthKey')}
+    
+            var dataToSend = token;
+            var user_data;
+    
+            
+            $.ajax({
+                url : "http://localhost:5001/getid",
+                headers: {'Access-Control-Allow-Origin' : 'http://localhost:5001' },
+                type : "POST", // http method
                 dataType: "json",
                 contentType: "application/json",
-                data :  JSON.stringify(user_data) , 
-        
-                success : function(other_profiles) {
-                    console.log(other_profiles);   
-                    $("#other-users").append(other_profiles);
+                data :  JSON.stringify(dataToSend) , // data sent with the post request
+            
+                // handle a successful response
+                success : function(json) {
+                    email = json[2];
+                    city = json[4]; 
+                    user_data = {
+                        "email" : email,
+                        "city" : city
+                    };    
+    
+                    $.ajax({
+                    url : "http://localhost:5005/",
+                    headers: {'Access-Control-Allow-Origin' : 'http://localhost:5005' },
+                    type : "POST", 
+                    dataType: "json",
+                    contentType: "application/json",
+                    data :  JSON.stringify(user_data) , 
+            
+                    success : function(other_profiles) {
+                        console.log(other_profiles);   
+                        other_profiles.forEach(profile => {
+                            var user = "<li>" + profile[0] + " " + profile[1] + " ans. </li>";
+                            $("#other-users").append(user);
+                            console.log(profile);
+                        });
+                        
+                    },
+            
+                    error : function(xhr,errmsg,err) {
+                        $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                        " <a href='#' class='close'>&times;</a></div>"); 
+                    console.log(xhr.status + ": " + xhr.responseText); 
+                }
+            });
+    
                 },
-        
+                
+                // handle a non-successful response
                 error : function(xhr,errmsg,err) {
                     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                    " <a href='#' class='close'>&times;</a></div>"); 
-                console.log(xhr.status + ": " + xhr.responseText); 
-            }
-        });
-
-
-            },
-            
-        
-            // handle a non-successful response
-            error : function(xhr,errmsg,err) {
-                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                    " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-                window.location = "http://localhost/connexion/connexion.html";
-            }
-        });
-
-        
-        /*console.log(user_data);
-        $.ajax({
-            url : "http://localhost:5005/",
-            headers: {'Access-Control-Allow-Origin' : 'http://localhost:5005' },
-            type : "POST", 
-            dataType: "json",
-            contentType: "application/json",
-            data :  JSON.stringify(user_data) , 
-        
-            success : function(other_profiles) {
-                console.log(other_profiles);   
-                $("#other-users").append(other_profiles);
-            },
-        
-            error : function(xhr,errmsg,err) {
-                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                    " <a href='#' class='close'>&times;</a></div>"); 
-                console.log(xhr.status + ": " + xhr.responseText); 
-            }
-        });
-        */
-    }
-    </script>
+                        " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                    window.location = "http://localhost/connexion/connexion.html";
+                }
+            });
+        }
+      </script>
+    </body>
 </html>

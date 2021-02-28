@@ -47,7 +47,6 @@ def match_by_city():
         other_user_url = "https://nominatim.openstreetmap.org/search.php?city=" + city + "&county=" + departement_user + "&polygon_geojson=1&format=jsonv2"
         #other_user_url = "https://nominatim.openstreetmap.org/search/" + city + "?format=json"
         response = requests.get(other_user_url).json()
-        print(response)
         if response :
             match_profiles.append(other_user)
     
