@@ -20,7 +20,7 @@ Pour plus d'informations voir le PDF : `velo-rencontre.pdf`
 
 Nous utilison le JSON Web Token (avec l'algorithme HS256 pour le hachage) qui est stocké en localStorage (sur la session du navigateur de l'utilisateur).
 
-Nos API (REST) sont développées en NodeJS, Python (flask), Ajax...
+Nos API (REST) sont développées en NodeJS (Express), Python (flask), Ajax...
 
 ## Schéma de notre architecture
 
