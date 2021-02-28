@@ -17,9 +17,9 @@ Lancement du projet :
 - Front
 - Authentification
 
-Nous utilisons un token JWT (avec l'algorithme HS256 pour le hashage du mot de passe) pour maintenir les différentes connexions.
+Nous utilison le JSON Web Token (avec l'algorithme HS256 pour le hachage) qui est stocké en localStorage (sur la session du navigateur de l'utilisateur).
 
-Nos API (REST) sont développées en NodeJS, Python (flask).
+Nos API (REST) sont développées en NodeJS, Python (flask), Ajax...
 
 ## Schéma de notre architecture
 
