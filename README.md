@@ -9,7 +9,7 @@ Lancement du projet :
  Le site est accessible via l'url : 
  `http://localhost`
  
-Pour plus d'informations voir le PDF : velo-rencontre.pdf
+Pour plus d'informations voir le PDF : `velo-rencontre.pdf`
  
 5 microservices sont disponibles et mis en place dans notre projet. 
 - Map 
