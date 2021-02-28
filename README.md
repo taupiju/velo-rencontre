@@ -7,7 +7,7 @@ Lancement du projet :
 
 
  Le site est accessible via l'url : 
- `localhost`
+ `http://localhost`
  
  
 5 microservices sont disponibles et mis en place dans notre projet. 
